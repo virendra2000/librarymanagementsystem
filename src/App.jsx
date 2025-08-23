@@ -1,14 +1,16 @@
 import {BrowserRouter as Router , Routes , Route} from 'react-router-dom'
 import './App.css'
-import Home from './Components/Home';
-import Dashboard from './Components/Dashboard';
+import Dashboard from './Components/Dashboard'
+import Login from './Components/Login'
+import Register from './Components/Register'
 function App() {
   return (
     <>
-      <Router future={{ v7_startTransition: true , v7_relativeSplatPath: true}}>
+      <Router>
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/userdashboard" element={<Dashboard/>} />
+          <Route path="/" element={<Dashboard/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/registration" element={<Register/>} />
         </Routes>
       </Router>
     </>

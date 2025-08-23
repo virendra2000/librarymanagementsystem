@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-
-const Home = () => {
+const Login = () => {
     const navigate = useNavigate();
 
-    const [userData, setUserData] = useState({ email: 'dhirajkalwar57@gmail.com', password: 'Dhiraj@2000' });
+    const [userData, setUserData] = useState({ 
+        email: 'dhirajkalwar57@gmail.com', 
+        password: 'Dhiraj@2000',
+        username: 'Dhiraj Kalwar'
+     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -22,7 +25,8 @@ const Home = () => {
                 position: toast.POSITION.TOP_CENTER,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
-            navigate('/userdashboard');
+            localStorage.setItem('user', JSON.stringify(userData));
+            navigate('/');
         } else {
             toast.error('Invalid Credentials', {
                 position: toast.POSITION.TOP_CENTER,
@@ -63,6 +67,10 @@ const Home = () => {
                         >
                             Login
                         </button>
+
+                        <span>
+                            Don't have an account? <a href="/registration" className="font-bold text-green-400 hover:underline">Register</a>
+                        </span>
                     </form>
                 </div>
             </div>
@@ -70,4 +78,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default Login;
