@@ -26,7 +26,7 @@ const Navbar = ({userData}) => {
     };
     return (
         <>
-            <nav className="bg-slate-100 p-4 shadow-md shadow-gray-300 w-full flex flex-row justify-between">
+            <nav className="bg-slate-100 p-4 shadow-md shadow-gray-500 w-full flex flex-row justify-between">
                 <span className="text-2xl font-semibold flex flex-row gap-2">
                     <MdLocalLibrary color="#2fd911" size="40"/>
                     <span>Library Management System</span>

@@ -4,6 +4,7 @@ import { GiBlackBook } from "react-icons/gi";
 import { GiArchiveResearch } from "react-icons/gi";
 import { GiBookCover } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
+import { TbReport } from "react-icons/tb";
 const Dashboard = () => {
     const navigate = useNavigate();
     const addBook = () => {
@@ -14,6 +15,9 @@ const Dashboard = () => {
     }
     const bookDepositPage = () => {
         navigate('/book/return');
+    }
+    const reportpage = () => {
+        navigate('/reports');
     }
     const [userData, setUserData] = useState({ 
             userEmail: 'dhirajkalwar57@gmail.com',
@@ -40,6 +44,10 @@ const Dashboard = () => {
                         <div onClick={bookDepositPage} className="card-box p-5 gap-4 flex flex-col items-center justify-center bg-white shadow-md shadow-gray-400 rounded-lg cursor-pointer">
                             <GiBookCover size="40"/>
                             <span className="text-xl text-center font-bold">Book <br/>Return</span>
+                        </div>
+                        <div onClick={reportpage} className="card-box p-5 gap-4 flex flex-col items-center justify-center bg-white shadow-md shadow-gray-400 rounded-lg cursor-pointer">
+                            <TbReport size="40"/>
+                            <span className="text-xl text-center font-bold">Reports</span>
                         </div>
                     </div>
                 </div>

@@ -48,7 +48,7 @@ const BookDeposit = () => {
         // Corrected: Add a delay to let the toast display
         setTimeout(() => {
             navigate('/');
-        }, 5000); 
+        }, 3000); 
     };
 
     if (loading) {
@@ -68,7 +68,7 @@ const BookDeposit = () => {
                             <div className="overflow-x-auto w-full max-w-2xl bg-white rounded-lg shadow-lg">
                                 <table className="min-w-full">
                                     <thead>
-                                        <tr className="bg-gray-100 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                        <tr className="bg-green-500 text-left text-xs font-semibold uppercase tracking-wider text-slate-900">
                                             <th className="px-6 py-3 border-b-2 border-gray-200">Book Name</th>
                                             <th className="px-6 py-3 border-b-2 border-gray-200">Expected Return</th>
                                             <th className="px-6 py-3 border-b-2 border-gray-200 text-center">Action</th>
