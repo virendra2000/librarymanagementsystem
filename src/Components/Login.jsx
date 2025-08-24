@@ -7,10 +7,11 @@ const Login = () => {
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState({ 
-        email: 'dhirajkalwar57@gmail.com', 
-        password: 'Dhiraj@2000',
-        username: 'Dhiraj Kalwar'
-     });
+            userEmail: 'dhirajkalwar57@gmail.com',
+            password: 'Dhiraj@2000',
+            name: 'Dhiraj Kalwar',
+            mobileNo: '7977223126',
+});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -20,12 +21,11 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        if(userData.email === 'dhirajkalwar57@gmail.com' && userData.password === 'Dhiraj@2000') {
+        if(userData.userEmail === 'dhirajkalwar57@gmail.com' && userData.password === 'Dhiraj@2000') {
             toast.success('Login Successful!', {
                 position: toast.POSITION.TOP_CENTER,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
-            localStorage.setItem('user', JSON.stringify(userData));
             navigate('/');
         } else {
             toast.error('Invalid Credentials', {
@@ -47,10 +47,10 @@ const Login = () => {
                     <form onSubmit={handleLogin} className="mt-2 flex flex-col gap-2 items-center">
                         <input
                             type="email"
-                            placeholder="Username"
-                            value={userData.email}
+                            placeholder="Email Address"
+                            value={userData.userEmail}
                             onChange={handleInputChange}
-                            name="email"
+                            name="userEmail"
                             className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <input

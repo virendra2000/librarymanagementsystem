@@ -2,32 +2,27 @@ import React, { useState , useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { MdLocalLibrary } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
-import { IoLogInOutline } from "react-icons/io5"; // Importing the login icon
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Navbar = () => {
+const Navbar = ({userData}) => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
-        useEffect(() => {
-            const storedUserData = localStorage.getItem('user');
-            if (storedUserData) {
-                setUserData(JSON.parse(storedUserData));
-            }
-        }, []);
     const callLogoutPage = async () => {
         toast.success('Logout Successfully!', {
-            position: toast.POSITION.TOP_CENTER,
+            autoClose: 5000,
             hideProgressBar: false,
             className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
         });
-        localStorage.removeItem('user');
-        setUserData(null);
-        navigate('/');
+        setTimeout(() => {
+            navigate('/');
+        }, 5000); 
     };
     const callLoginPage = () => {
         navigate('/login');
+    };
+    const callHomePage = () => {
+        navigate('/');
     };
     return (
         <>
@@ -37,10 +32,11 @@ const Navbar = () => {
                     <span>Library Management System</span>
                 </span>
                 <div className="flex flex-row gap-2 items-center justify-between">
+                    <span onClick={callHomePage} className="cursor-pointer">Home</span>
                     {userData ? (
                         <>
                             <FaUserCircle size="40"/>
-                            <span>{userData ? userData.username : ''}</span>
+                            <span>{userData ? userData.name : ''}</span>
                             <span onClick={callLogoutPage} className="flex flex-row items-center gap-1 cursor-pointer">
                                 <IoLogOutOutline size="30"/>
                             </span>

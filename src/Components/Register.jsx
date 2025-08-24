@@ -21,13 +21,13 @@ const Register = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         
-        if(userData.email != '' && userData.password === 'Dhiraj@2000') {
+        if(userData.email != '' && userData.password != '' && userData.name != '' && userData.mobileNo != '') {
             toast.success('Login Successful!', {
                 position: toast.POSITION.TOP_CENTER,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
             localStorage.setItem('user', JSON.stringify(userData));
-            navigate('/');
+            navigate('/login');
         } else {
             toast.error('Invalid Credentials', {
                 position: toast.POSITION.TOP_CENTER,
