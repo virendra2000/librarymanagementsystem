@@ -3,14 +3,15 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 const Register = () => {
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState({ 
-        userEmail: 'dhirajkalwar57@gmail.com',
-        password: 'Dhiraj@2000',
-        name: 'Dhiraj Kalwar',
-        mobileNo: '7977223126',
+        userEmail: '',
+        password: '',
+        name: '',
+        mobileNo: '',
      });
 
     const handleInputChange = (e) => {
@@ -19,18 +20,19 @@ const Register = () => {
     };
 
     const handleLogin = async (e) => {
-        e.preventDefault();
         
-        if(userData.email != '' && userData.password != '' && userData.name != '' && userData.mobileNo != '') {
+        e.preventDefault();
+		
+		const result = await axios.post("http://localhost:8080/api/user/register",userData);
+        console.log(result.data)
+        
+        if(result.data) {
             toast.success('Login Successful!', {
-                position: toast.POSITION.TOP_CENTER,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
-            localStorage.setItem('user', JSON.stringify(userData));
             navigate('/login');
         } else {
-            toast.error('Invalid Credentials', {
-                position: toast.POSITION.TOP_CENTER,
+            toast.error('User Already Exists', {
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
         }
@@ -48,11 +50,11 @@ const Register = () => {
                     <form onSubmit={handleLogin} className="mt-2 flex flex-col gap-2 items-center">
                         <input
                             type="text"
-                            placeholder="User Name"
+                            placeholder="Name"
                             value={userData.name}
                             onChange={handleInputChange}
                             name="name"
-                            className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
+                            className="w-full  p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <input
                             type="text"
@@ -60,7 +62,7 @@ const Register = () => {
                             value={userData.mobileNo}
                             onChange={handleInputChange}
                             name="mobileNo"
-                            className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
+                            className="w-full  p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <input
                             type="email"
@@ -68,7 +70,7 @@ const Register = () => {
                             value={userData.userEmail}
                             onChange={handleInputChange}
                             name="userEmail"
-                            className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
+                            className="w-full  p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <input
                             type="password"
@@ -76,7 +78,7 @@ const Register = () => {
                             value={userData.password}
                             onChange={handleInputChange}
                             name="password"
-                            className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
+                            className="w-full  p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <button
                             type="submit"

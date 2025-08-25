@@ -7,6 +7,7 @@ import { ImBook } from "react-icons/im";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 const AddBook = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({ 
@@ -28,18 +29,19 @@ const AddBook = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const result = await axios.post("http://localhost:8080/api/addbook",bookData);
     
-        if(bookData) {
+        if(result) {
             toast.success('Book Added Successfully!', {
                 autoClose: 5000,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
         setTimeout(() => {
             navigate('/');
-        }, 5000); 
+        }, 5200); 
         } else {
-            toast.error('Invalid Book Data', {
-                position: toast.POSITION.TOP_CENTER,
+            toast.error('Server Issue', {
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
         }

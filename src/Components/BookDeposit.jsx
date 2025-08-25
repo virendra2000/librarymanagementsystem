@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import booksData from "../Constants/books.json";
 import transactionDetails from "../Constants/transactions.json";
+import axios from "axios";
 
 const BookDeposit = () => {
     const navigate = useNavigate();
@@ -18,37 +19,67 @@ const BookDeposit = () => {
     const [userTransactions, setUserTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setLoading(true);
-        setTimeout(() => {
-            const userLentBooks = transactionDetails.filter(t => t.userId === userData.userId);
-            const transactionsWithBookDetails = userLentBooks.map(transaction => {
-                const bookInfo = booksData.find(b => b.bookId === transaction.bookId);
-                return {
-                    ...transaction,
-                    bookName: bookInfo ? bookInfo.bookName : 'Unknown Book'
-                };
+    const getUserTransaction =  async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/api/gettransaction",{
+                withCredentials:true,
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+
+            if(response.data) {
+                console.log(response.data)
+                setUserTransactions(response.data)
+            }else {
+                toast.error('Server Issue', {
+                autoClose: 5000,
+                className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
+            }
+        } catch (error) {
+            navigate('/login');
+            
+        }
+    }
 
-            setUserTransactions(transactionsWithBookDetails);
+    useEffect(() => {
+            setLoading(true);
+            getUserTransaction()
             setLoading(false);
-        }, 5000);
-    }, [userData.userId]);
-
-    const handleReturnBook = (transactionId) => {
-        console.log(`Simulating return for Transaction ID: ${transactionId}`);
-        const updatedTransactions = userTransactions.filter(t => t.transactionId !== transactionId);
-        setUserTransactions(updatedTransactions);
-
-        toast.success('Book returned successfully!', {
-            autoClose: 5000,
-            className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
-        });
         
-        // Corrected: Add a delay to let the toast display
-        setTimeout(() => {
-            navigate('/');
-        }, 3000); 
+    }, []);
+
+    const handleReturnBook = async (transactionId) => {
+
+        try {
+            const response = await axios.post(`http://localhost:8080/api/returnbook/${transactionId}`,{},{
+            withCredentials:true,
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+        })
+
+        if(response.data) {
+            toast.success('Book returned successfully!', {
+                autoClose: 2000,
+                className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
+            });
+            setTimeout(() => {
+                window.location.reload()
+            },2200)
+        }else {
+                toast.error('Server Issue', {
+                autoClose: 5000,
+                className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
+            });
+        }
+        } catch (error) {
+            navigate('/login');
+        }
+        
     };
 
     if (loading) {
@@ -78,10 +109,10 @@ const BookDeposit = () => {
                                         {userTransactions.map(transaction => (
                                             <tr key={transaction.tId} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4 whitespace-nowrap border-b text-sm font-medium text-gray-900">{transaction.bookName}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap border-b text-sm text-gray-500">{transaction.rDate}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap border-b text-sm text-gray-500">{transaction.rdate}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap border-b text-center text-sm">
                                                     <button 
-                                                        onClick={() => handleReturnBook(transaction.tId)}
+                                                        onClick={() => handleReturnBook(transaction.tid)}
                                                         className="bg-green-400 text-slate-950 px-4 py-2 rounded-full hover:bg-green-600 cursor-pointer transition-colors"
                                                     >
                                                         Return

@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 const Login = () => {
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState({ 
-            userEmail: 'dhirajkalwar57@gmail.com',
-            password: 'Dhiraj@2000',
-            name: 'Dhiraj Kalwar',
-            mobileNo: '7977223126',
+            userEmail: '',
+            password: '',
 });
 
     const handleInputChange = (e) => {
@@ -21,15 +20,18 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        if(userData.userEmail === 'dhirajkalwar57@gmail.com' && userData.password === 'Dhiraj@2000') {
+        const response = await axios.post("http://localhost:8080/api/user/login",userData,{withCredentials:true})
+
+
+
+        if(response.data) {
+            sessionStorage.setItem("token", response.data.jwtToken);
             toast.success('Login Successful!', {
-                position: toast.POSITION.TOP_CENTER,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
             navigate('/');
         } else {
             toast.error('Invalid Credentials', {
-                position: toast.POSITION.TOP_CENTER,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
         }

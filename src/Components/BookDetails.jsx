@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import dummyBooks from "../Constants/books.json";
 import transactionDetails from "../Constants/transactions.json";
+import axios from "axios";
 const BookDetails = () => {
     const { bookId } = useParams();
     const navigate = useNavigate();
@@ -13,41 +14,72 @@ const BookDetails = () => {
     const [loading, setLoading] = useState(true);
     const [availability, setAvailability] = useState(null);
     const [unavailableBook, setUnavailableBook] = useState([]);
+    const [rDate, setRDate] = useState("2025-08-26")
     const [userData, setUserData] = useState({ 
         userEmail: 'dhirajkalwar57@gmail.com',
         password: 'Dhiraj@2000',
         name: 'Dhiraj Kalwar',
         mobileNo: '7977223126',
     });
-    useEffect(() => {
-        setLoading(true);
-        setTimeout(() => {
-            const foundBook = dummyBooks.find(b => b.bookId === bookId);
-            setBook(foundBook);
+    const getBookDetails = async () => {
+        const result = await axios.get(`http://localhost:8080/api/books/${bookId}`);
 
-            if (foundBook) {
-                if (foundBook.availCount > 0) {
+        setBook(result.data);
+         if (result.data) {
+                if (result.data.availCount > 0) {
                     setAvailability('Available');
                     
                 } else {
                     setAvailability('Unavailable');
-                    const lentBooks = transactionDetails.filter(t => t.bookId === bookId);
-                    setUnavailableBook(lentBooks);
+                    const lentBooks = await axios.get(`http://localhost:8080/api/books/transaction/${bookId}`);
+                    setUnavailableBook(lentBooks.data);
                 }
             }
-            setLoading(false);
-        }, 5000);
+            
+    }
+    useEffect(() => {
+        setLoading(true);
+        getBookDetails();
+        setLoading(false);
+        
     }, [bookId]);
 
-    const handleLendBook = () => {
-        console.log(`Book "${book.bookName}" lent to user. Transaction saved.`);
-        toast.success('Book Lent Successfully', {
+    const handleLendBook = async () => {
+
+        try {
+            const response = await axios.post(`http://localhost:8080/api/transaction?book=${book.bookId}`,{"rDate":rDate},{
+            withCredentials:true,
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }})
+            if (response.data) {
+                toast.success('Book Lent Successfully', {
                     autoClose: 5000,
                     className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
                 });
-        setTimeout(() => {
-            navigate('/');
-        }, 5000); 
+                setTimeout(() => {
+                    navigate('/');
+                }, 5000);
+            } else {
+                toast.error('Server Issue', {
+                    className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
+                });
+            }
+            
+        } catch (error) {
+            toast.error('Login to Continue', {
+                    className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
+                });
+                setTimeout(() => {
+                    navigate('/login');
+                },4000)
+            
+
+        }
+
+        
+         
     };
 
     const handleGoBack = () => {

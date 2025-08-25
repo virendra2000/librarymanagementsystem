@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import dummyBooks from "../Constants/books.json";
 import { CgSearch } from "react-icons/cg";
+import axios from "axios";
 const SearchBook = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -20,7 +21,9 @@ const SearchBook = () => {
     const initialQuery = searchParams.get('s') || '';
     const [searchQuery, setSearchQuery] = useState(initialQuery);
 
-    const handleSearch = (query) => {
+    const handleSearch = async (query) => {
+
+        
         if (!query.trim()) {
             setBooks([]);
             return;
@@ -28,20 +31,16 @@ const SearchBook = () => {
 
         setLoading(true);
         setError(null);
-
-        setTimeout(() => {
-            try {
-                const lowerCaseQuery = query.toLowerCase();
-                const filteredBooks = dummyBooks.filter(book =>
-                    book.bookName.toLowerCase().includes(lowerCaseQuery)
-                );
-                setBooks(filteredBooks);
+        
+        try {
+            const result = await axios.get(`http://localhost:8080/api/books/search?s=${query}`);
+                
+            setBooks(result.data);
             } catch (err) {
                 setError('Failed to filter books.');
             } finally {
                 setLoading(false);
             }
-        }, 500);
     };
 
     useEffect(() => {
@@ -106,6 +105,7 @@ const SearchBook = () => {
                                     <h3 className="font-bold text-lg text-gray-800 line-clamp-2">{book.bookName}</h3>
                                     <p className="text-gray-600 text-sm mt-1 line-clamp-1">by {book.author}</p>
                                     <p className="text-gray-500 text-xs"><span className="font-semibold">Genre:</span> {book.genre}</p>
+                                    <p className="text-gray-500 text-xs"><span className="font-semibold">Edition:</span> {book.bookEdition}</p>
                                 </div>
                             </div>
                         ))

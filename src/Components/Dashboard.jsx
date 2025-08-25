@@ -5,6 +5,7 @@ import { GiArchiveResearch } from "react-icons/gi";
 import { GiBookCover } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
 import { TbReport } from "react-icons/tb";
+import axios from "axios";
 const Dashboard = () => {
     const navigate = useNavigate();
     const addBook = () => {
@@ -19,16 +20,42 @@ const Dashboard = () => {
     const reportpage = () => {
         navigate('/reports');
     }
-    const [userData, setUserData] = useState({ 
-            userEmail: 'dhirajkalwar57@gmail.com',
-            password: 'Dhiraj@2000',
-            name: 'Dhiraj Kalwar',
-            mobileNo: '7977223126',
-    });
+    
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+    
+    // const checkLogin = async () => {
+    //   try {
+    //     const response = await axios.get("http://localhost:8080/api/getuser", {
+    //       withCredentials: true, 
+    //       headers:{
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${sessionStorage.getItem('token')}`  // <-- send JWT here
+    //       }
+    //     });
+    //     console.log(response.data)
+    //     setUserData(response.data); 
+    //   } catch (err) {
+    //     console.log(err)
+    //     setUserData(null); 
+    //   } finally {
+    //     setLoading(false); 
+    //   }
+    // };
+
+    // checkLogin();
+
+
+  }, []);
+
+  if (loading) {
+    return <p>Loading dashboard...</p>; // optional loading state
+  }
     return (
         <>
             <div className="dashboard h-screen flex flex-col bg-slate-100">
-                <Navbar userData={userData}/>
+                <Navbar />
                 <div className="p-5">
                     <h1 className="text-3xl font-bold">Dashboard</h1>
 

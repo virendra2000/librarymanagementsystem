@@ -7,6 +7,7 @@ import AddBook from './Components/AddBook'
 import SearchBook from './Components/SearchBook'
 import BookDetails from './Components/BookDetails'
 import BookDeposit from './Components/BookDeposit'
+import Reports from './Components/Reports'
 function App() {
   return (
     <>
@@ -19,6 +20,7 @@ function App() {
           <Route path="/search" element={<SearchBook/>} />
           <Route path="/book/:bookId" element={<BookDetails/>}/>
           <Route path="/book/return" element={<BookDeposit/>}/>
+          <Route path="/reports" element={<Reports/>}/>
         </Routes>
       </Router>
     </>
