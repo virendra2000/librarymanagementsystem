@@ -2,18 +2,11 @@ import Navbar from "./Navbar";
 import React, { useState, useEffect } from "react";
 import { GiBlackBook, GiArchiveResearch, GiBookCover } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
-import booksData from "../Constants/books.json";
-import transactionDetails from "../Constants/transactions.json";
 import axios from "axios";
 
 const Reports = () => {
     const navigate = useNavigate();
-    const [userData] = useState({ 
-        userEmail: 'dhirajkalwar57@gmail.com',
-        password: 'Dhiraj@2000',
-        name: 'Dhiraj Kalwar',
-        mobileNo: '7977223126',
-    });
+    
     
     const [todaysReturns, setTodaysReturns] = useState([]);
     const [genreCounts, setGenreCounts] = useState([]);
@@ -50,7 +43,7 @@ const Reports = () => {
     return (
         <>
             <div className="dashboard h-screen flex flex-col bg-slate-100">
-                <Navbar userData={userData}/>
+                <Navbar />
                 <div className="p-5 flex flex-col md:flex-row gap-8 flex-1">
                     {/* Section 1: Today's Returns */}
                     <div className="w-full md:w-1/2 bg-white rounded-lg shadow-lg p-6">

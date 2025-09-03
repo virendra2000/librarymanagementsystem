@@ -1,18 +1,11 @@
 import Navbar from "./Navbar";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import dummyBooks from "../Constants/books.json";
 import { CgSearch } from "react-icons/cg";
 import axios from "axios";
 const SearchBook = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
-    const [userData, setUserData] = useState({ 
-        userEmail: 'dhirajkalwar57@gmail.com',
-        password: 'Dhiraj@2000',
-        name: 'Dhiraj Kalwar',
-        mobileNo: '7977223126',
-    });
     
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -24,7 +17,7 @@ const SearchBook = () => {
     const handleSearch = async (query) => {
 
         
-        if (!query.trim()) {
+        if (!query.trim()) { // after removing whitespaces if query is empty then set books to empty array
             setBooks([]);
             return;
         }
@@ -33,9 +26,9 @@ const SearchBook = () => {
         setError(null);
         
         try {
-            const result = await axios.get(`http://localhost:8080/api/books/search?s=${query}`);
+            const result = await axios.get(`http://localhost:8080/api/books/search?s=${query}`); // api call
                 
-            setBooks(result.data);
+            setBooks(result.data); // set searched book data
             } catch (err) {
                 setError('Failed to filter books.');
             } finally {
@@ -44,10 +37,10 @@ const SearchBook = () => {
     };
 
     useEffect(() => {
-        const query = searchParams.get('s');
+        const query = searchParams.get('s'); // getting param from url
         if (query) {
-            handleSearch(query);
-            setSearchQuery(query);
+            handleSearch(query); // handel searching function
+            setSearchQuery(query); // set query in url
         } else {
             setBooks([]);
             setSearchQuery('');
@@ -56,13 +49,13 @@ const SearchBook = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        setSearchParams({ s: searchQuery });
+        setSearchParams({ s: searchQuery }); // set searching that user typed
     };
 
     return (
         <>
             <div className="dashboard h-screen flex flex-col bg-gray-100">
-                <Navbar userData={userData} />
+                <Navbar  />
                 <div className="search-container p-5 w-full bg-white shadow-md">
                     <form onSubmit={handleFormSubmit} className="flex items-center space-x-4 w-full max-w-2xl mx-auto">
                         <div className="w-full px-5 flex flex-row rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow duration-200">

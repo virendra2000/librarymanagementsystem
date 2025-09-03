@@ -16,23 +16,28 @@ const Register = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
+        setUserData({ ...userData, [name]: value }); // setting value
     };
 
     const handleLogin = async (e) => {
         
         e.preventDefault();
 		
-		const result = await axios.post("http://localhost:8080/api/user/register",userData);
+		const result = await axios.post("http://localhost:8080/api/user/register",userData); //api call
         console.log(result.data)
         
         if(result.data) {
-            toast.success('Login Successful!', {
+            toast.success('Register Successful!', {
+                autoClose:2000,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
-            navigate('/login');
+            setTimeout(() => {
+                navigate('/login');
+            },2200)
+            
         } else {
             toast.error('User Already Exists', {
+                autoClose:2000,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
         }

@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import booksData from "../Constants/books.json";
-import transactionDetails from "../Constants/transactions.json";
 import axios from "axios";
 
 const BookDeposit = () => {
@@ -27,7 +25,7 @@ const BookDeposit = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-            })
+            })           // api call for getting all users transaaction 
 
             if(response.data) {
                 console.log(response.data)
@@ -60,7 +58,7 @@ const BookDeposit = () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-        })
+        })    // api for returing books that user borrow
 
         if(response.data) {
             toast.success('Book returned successfully!', {

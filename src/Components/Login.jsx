@@ -14,24 +14,29 @@ const Login = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
+        setUserData({ ...userData, [name]: value });  // set user value using onChange function 
     };
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const response = await axios.post("http://localhost:8080/api/user/login",userData,{withCredentials:true})
+        const response = await axios.post("http://localhost:8080/api/user/login",userData,{withCredentials:true}) // api call 
 
 
 
         if(response.data) {
-            sessionStorage.setItem("token", response.data.jwtToken);
+            sessionStorage.setItem("token", response.data.jwtToken); // set token in session storage
             toast.success('Login Successful!', {
+                autoClose:2000,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
-            navigate('/');
+            setTimeout(() => {
+                navigate('/');
+            },2200)
+            
         } else {
             toast.error('Invalid Credentials', {
+                autoClose:2000,
                 className: 'bg-white text-green-400 dark:text-white dark:bg-slate-600 font-bold',
             });
         }

@@ -1,36 +1,30 @@
 import Navbar from "./Navbar";
 import React, { useState , useEffect } from "react";
-import { GiBlackBook } from "react-icons/gi";
-import { GiArchiveResearch } from "react-icons/gi";
-import { GiBookCover } from "react-icons/gi";
-import { ImBook } from "react-icons/im";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 const AddBook = () => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState({ 
-            userEmail: 'dhirajkalwar57@gmail.com',
-            password: 'Dhiraj@2000',
-            name: 'Dhiraj Kalwar',
-            mobileNo: '7977223126',
-    });
     const [bookData, setBookData] = useState({
         bookName: '',
         author: '',
         genre: '',
         isbnNo: '',
+        quantity:null
     });
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setBookData({ ...bookData, [name]: value });
+        setBookData({ ...bookData, [name]: value }); // onchange setting book details
     };
     
     const handleSubmit = async (e) => {
+        /**
+         * Handel the Submission Of Book Details 
+         */
         e.preventDefault();
 
-        const result = await axios.post("http://localhost:8080/api/addbook",bookData);
+        const result = await axios.post("http://localhost:8080/api/addbook",bookData); // api call
     
         if(result) {
             toast.success('Book Added Successfully!', {
@@ -49,7 +43,7 @@ const AddBook = () => {
     return (
         <>
             <div className="dashboard h-screen flex flex-col bg-slate-100">
-                <Navbar userData={userData}/>
+                <Navbar />
                 <ToastContainer />
                 <div className="p-5">
                     <h1 className="text-3xl text-center font-bold">Add Book</h1>
@@ -62,6 +56,7 @@ const AddBook = () => {
                             value={bookData.bookName}
                             onChange={handleInputChange}
                             name="bookName"
+                            required
                             className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <input
@@ -70,6 +65,7 @@ const AddBook = () => {
                             value={bookData.author}
                             onChange={handleInputChange}
                             name="author"
+                            required
                             className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <input
@@ -78,6 +74,7 @@ const AddBook = () => {
                             value={bookData.genre}
                             onChange={handleInputChange}
                             name="genre"
+                            required
                             className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
                         />
                         <input
@@ -86,7 +83,17 @@ const AddBook = () => {
                             value={bookData.isbnNo}
                             onChange={handleInputChange}
                             name="isbnNo"
+                            required
                             className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"
+                        />
+                        <input 
+                            type="number"
+                            placeholder="Quantity"
+                            value={bookData.quantity}
+                            onChange={handleInputChange}
+                            name="quantity"
+                            required
+                            className="w-full pl-12 p-4 border-none rounded-lg bg-slate-300 outline-none focus:ring-2 focus:ring-green-400"                        
                         />
                         <button
                             type="submit"

@@ -13,7 +13,7 @@ const Navbar = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const callLogoutPage = async () => {
-        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('token'); // removing token to logout user
         toast.success('Logout Successfully!', {
             autoClose: 5000,
             hideProgressBar: false,
@@ -40,7 +40,7 @@ const Navbar = () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`  // <-- send JWT here
               }
-            });
+            }); // api call to check user is login or not
             console.log(response.data)
             setUserData(response.data); 
           } catch (err) {
